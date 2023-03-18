@@ -10,8 +10,6 @@ class AVLNode:
     value = None
     bf = None
 
-#cambio 1
-#camcio jafjlsa
    
 #rotacion izq
 def rotateLeft(Tree,avlnode):
@@ -101,40 +99,34 @@ def reBalanceR(AVLTree,node):
             rotateRight(AVLTree, node)
         else:
             rotateRight(AVLTree, node)
-#insert binarytree modificaso para AVLT
 
-def insertw(B,newnode, currentnode):
+#insert binarytree modificado para AVLT
+def insertR(B,newnode, currentnode):
     if newnode.key>currentnode.key:
         if currentnode.rightnode==None:
             newnode.parent=currentnode
             currentnode.rightnode=newnode
             #cuando ya insertamos tenemos que chequear que el arbol siga siendo AVL
-            #tendremos que cheaquer en esa rama el bf de cada uno de sus padre si uno 
-            #no se encuentra en el intervalo entonces balanceamos
             node_desbalance=check_balance_parent(newnode)
             if node_desbalance != None:
-                #balancear
                 reBalanceR(B, node_desbalance)
             return newnode.key
         else:
-            return insertw(newnode, currentnode.rightnode)
-        
+            return insertR(newnode, currentnode.rightnode)
     elif newnode.key<currentnode.key:
         if currentnode.leftnode==None:
             newnode.parent=currentnode
             currentnode.leftnode=newnode
-            #chequeamos solo subieron en el arbol
+            #chequeamos solo subiendo en el arbol
             node_desbalance=check_balance_parent(newnode)
             if node_desbalance != None:
-                #balancear
                 reBalanceR(B, node_desbalance)
 
             return newnode.key
         else:
-            return insertw(newnode, currentnode.leftnode)
+            return insertR(newnode, currentnode.leftnode)
     else:
         return None
-
 
 def check_balance_parent(node):
     while node != None:
@@ -144,7 +136,6 @@ def check_balance_parent(node):
         node=node.parent
     return None
 
-#mismo inser de binarytree pero ahora pasamos el arbol como parametro
 def insert(B,element,key):
     newnode=AVLNode()
     newnode.value=element
@@ -153,10 +144,10 @@ def insert(B,element,key):
     if B.root==None:
         B.root=newnode
     else:
-        return insertw(B,newnode, currentnode)
+        return insertR(B,newnode, currentnode)
 
 #Funcion delete
-def deletew(B,deletingnode):
+def deleteR(B,deletingnode):
     if deletingnode!=None:
         #Caso 1: Hoja
         if deletingnode.leftnode==None and deletingnode.rightnode==None:
@@ -167,23 +158,17 @@ def deletew(B,deletingnode):
                 padre=deletingnode.parent
                 #Me fijo si el nodo a eliminar es el hijo derecho o izquierdo de su padre
                 if padre.rightnode==deletingnode:
-
                     padre.rightnode=None
-                #balancear
                     node_desbalance=check_balance_parent(padre)
                     if node_desbalance != None:
-                        #balancear
                         reBalanceR(B, node_desbalance)
                     return deletingnode.key
                 else:
                     padre.leftnode=None
-                    #balancear
                     node_desbalance=check_balance_parent(padre)
                     if node_desbalance != None:
-                        #balancear
                         reBalanceR(B, node_desbalance)
-                    return deletingnode.key
-                
+                    return deletingnode.key               
         #Caso 2: Un solo hijo
         #Si es el hijo izquierdo
         elif deletingnode.rightnode==None:
@@ -197,14 +182,12 @@ def deletew(B,deletingnode):
                     padre.rightnode=deletingnode.leftnode
                     node_desbalance=check_balance_parent(padre)
                     if node_desbalance != None:
-                        #balancear
                         reBalanceR(B, node_desbalance)
                     return deletingnode.key
                 else:
                     padre.leftnode=deletingnode.leftnode
                     node_desbalance=check_balance_parent(padre)
                     if node_desbalance != None:
-                        #balancear
                         reBalanceR(B, node_desbalance)
                     return deletingnode.key
         #Si es el hijo derecho            
@@ -219,17 +202,14 @@ def deletew(B,deletingnode):
                     padre.rightnode=deletingnode.rightnode
                     node_desbalance=check_balance_parent(padre)
                     if node_desbalance != None:
-                        #balancear
                         reBalanceR(B, node_desbalance)
                     return deletingnode.key
                 else:
                     padre.leftnode=deletingnode.rightnode
                     node_desbalance=check_balance_parent(padre)
                     if node_desbalance != None:
-                        #balancear
                         reBalanceR(B, node_desbalance)
-                    return deletingnode.key
-                           
+                    return deletingnode.key         
         #Caso 3: Dos hijos
         else:
             aux1=deletingnode.rightnode
@@ -255,13 +235,11 @@ def deletew(B,deletingnode):
                     padre.rightnode=mayor
                     node_desbalance=check_balance_parent(padre)
                     if node_desbalance != None:
-                        #balancear
                         reBalanceR(B, node_desbalance)
                 else:
                     padre.leftnode=mayor
                     node_desbalance=check_balance_parent(padre)
                     if node_desbalance != None:
-                        #balancear
                         reBalanceR(B, node_desbalance)
 
             return deletingnode.key
@@ -282,12 +260,11 @@ def menorhijoizq(node):
         return node
     else:
         return menorhijoizq(node.leftnode)
-    
 
 def delete(B,element):
     currentnode=B.root
     deletingnode=searchR(currentnode, element)
-    return deletew(B,deletingnode)
+    return deleteR(B,deletingnode)
 
 def searchR(currentnode,element):
     if currentnode!=None:
