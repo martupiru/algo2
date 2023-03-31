@@ -9,3 +9,4 @@ class TrieNode:
     key = None
     isEndOfWord = False
 
+#insert
